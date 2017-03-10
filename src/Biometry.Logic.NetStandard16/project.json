@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Biometry.Common.NetStandard16": "1.0.0-*",
+    "NETStandard.Library": "1.6.0",
+    "PipServices.Commons": "2.0.3",
+    "PipServices.Data": "2.0.2"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}

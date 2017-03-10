@@ -1,0 +1,25 @@
+{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "emitEntryPoint": true
+  },
+
+  "dependencies": {
+    "Biometry.Common.NetStandard16": "1.0.0-*",
+    "Microsoft.NETCore.App": {
+      "type": "platform",
+      "version": "1.0.1"
+    },
+    "People.Logic.NetStandard16": "1.0.0-*",
+    "PipServices.Commons": "2.0.3",
+    "PipServices.Container": "2.0.1",
+    "PipServices.Data": "2.0.2",
+    "PipServices.Net": "2.0.5"
+  },
+
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": "dnxcore50"
+    }
+  }
+}
