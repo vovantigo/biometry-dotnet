@@ -1,14 +1,14 @@
 ﻿using System;
 using PipServices.Commons.Build;
 using PipServices.Commons.Refer;
-using PipServices.Telemetry.Services;
 using Biometry.Common.Build;
 using People.Logic.Memory;
 using People.Logic.Logic;
+using People.Service.Service;
 
 namespace People.Service.Build
 {
-    public class TelemetryFactory: IFactory
+    public class PeopleFactory: IFactory
     {
         private static readonly Lazy<PeopleMemoryPersistence> PeoplePersistance = new Lazy<PeopleMemoryPersistence>();
 
@@ -44,6 +44,12 @@ namespace People.Service.Build
             }
 
             return null;
+        }
+
+        public static object Create(Descriptor descriptor)
+        {
+            var factory = new PeopleFactory();
+            return factory.Create((object)descriptor);
         }
     }
 }

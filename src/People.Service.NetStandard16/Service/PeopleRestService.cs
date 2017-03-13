@@ -1,6 +1,6 @@
 ﻿using PipServices.Net.Rest;
 
-namespace PipServices.Telemetry.Services
+namespace People.Service.Service
 {
     public class PeopleRestService : RestService<Startup>
     {

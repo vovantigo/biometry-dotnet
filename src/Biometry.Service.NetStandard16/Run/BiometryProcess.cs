@@ -20,7 +20,7 @@ namespace Biometry.Service.Run
         public Task RunAsync(string[] args, CancellationToken token)
         {
             var configPath = args.Length > 0 ? args[0] : "./config/config.biometry.yaml";
-            return RunWithConfigFileAsync("telemetry", args, configPath, token);
+            return RunWithConfigFileAsync("biometry", args, configPath, token);
         }
     }
 }

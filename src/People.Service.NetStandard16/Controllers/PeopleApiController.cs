@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using PipServices.Telemetry.Logic;
-using PipServices.Telemetry.Models;
+using People.Logic.Logic;
+using Biometry.Common.Models;
 
-namespace PipServices.Telemetry.Controllers
+namespace People.Service.Controllers
 {
     [Route("people")]
     public class PeopleApiController : Controller

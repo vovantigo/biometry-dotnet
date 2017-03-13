@@ -2,8 +2,10 @@
 using System.Threading.Tasks;
 using PipServices.Commons.Refer;
 using PipServices.Container;
+using Biometry.Common.Build;
+using People.Service.Build;
 
-namespace PipServices.Telemetry.Run
+namespace People.Service.Run
 {
     public class PeopleProcess : ProcessContainer
     {
@@ -12,13 +14,13 @@ namespace PipServices.Telemetry.Run
             base.InitReferences(references);
 
             // Factory to statically resolve echo components
-            references.Put(Descriptors.TelemetryFactory, new BiometryFactory());
+            references.Put(Descriptors.PeopleFactory, new PeopleFactory());
         }
 
         public Task RunAsync(string[] args, CancellationToken token)
         {
             var configPath = args.Length > 0 ? args[0] : "./config/config.people.yaml";
-            return RunWithConfigFileAsync("telemetry", args, configPath, token);
+            return RunWithConfigFileAsync("people", args, configPath, token);
         }
     }
 }

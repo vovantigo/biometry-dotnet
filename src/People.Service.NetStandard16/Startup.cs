@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Biometry.Common.Build;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using People.Logic.Logic;
+using People.Service.Build;
+using PipServices.Commons.Refer;
 using PipServices.Net.Rest;
-using PipServices.Telemetry.Logic;
 
-namespace PipServices.Telemetry
+namespace People.Service
 {
     public class Startup
     {
@@ -24,15 +27,19 @@ namespace PipServices.Telemetry
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //var builder = services.AddMvc();
-            //builder.AddMvcOptions(o =>
-            //{
-            //    o.Filters.Add(new RestExceptionHandler());
-            //});
-
-            services.AddSingleton<IPeopleController, PeopleController>();
-            services.AddSingleton<ITelemetryController, TelemetryController>();
-            services.AddSingleton<IStatisticController, StatisticController>();
+            var builder = services.AddMvc();
+            builder.AddMvcOptions(o =>
+            {
+                o.Filters.Add(typeof(RestExceptionHandler));
+            });
+            services.AddSingleton<IPeopleController, PeopleController>(provider =>
+            {
+                var persistence = PeopleFactory.Create(Descriptors.BiometryMemoryPersistence);
+                var references = References.FromTuples(Descriptors.BiometryMemoryPersistence, persistence);
+                var controller = (PeopleController)PeopleFactory.Create(Descriptors.BiometryController);
+                controller.SetReferences(references);
+                return controller;
+            });
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime)

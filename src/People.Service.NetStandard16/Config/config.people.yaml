@@ -9,8 +9,9 @@
 # People controller
 - descriptor: "pip-services-biometry:controller:*:people:*"
 
-# Echo rest service
+# People rest service
 - descriptor: "pip-services-biometry:service:rest:people:*"
   connection:
     protocol: "http"
     host: "0.0.0.0"
+    port: "3002"
