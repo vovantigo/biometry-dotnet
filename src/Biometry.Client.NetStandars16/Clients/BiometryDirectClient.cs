@@ -24,7 +24,7 @@ namespace Biometry.Client.Clients
             _controller = references.GetOneRequired<IBiometryController>(Descriptors.BiometryController);
 
             if (_controller == null)
-                throw new ConfigException(null, "NO_TELEMETRY_CONTROLLER", "Telemetry Controller is not configured");
+                throw new ConfigException(null, "NO_BIOMETRY_CONTROLLER", "Biometry Controller is not configured");
 
         }
 

@@ -48,7 +48,7 @@ namespace Biometry.Logic.Logic
             _persistence = references.GetOneRequired<IBiometryMemoryPersistence>(Descriptors.BiometryMemoryPersistence);
 
             if (_persistence == null)
-                throw new ConfigException(null, "NO_PERSISTENCE", "Telemetry Memory Persistance is not configured");
+                throw new ConfigException(null, "NO_PERSISTENCE", "Biometry Memory Persistance is not configured");
 
             _persistence.SetReferences(references);
         }

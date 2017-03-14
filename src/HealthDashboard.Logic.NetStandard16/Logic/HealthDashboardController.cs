@@ -1,31 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Biometry.Client.Clients;
+using Biometry.Common.Build;
+using Biometry.Common.Helpers;
+using Biometry.Common.Models;
 using PipServices.Commons.Config;
 using PipServices.Commons.Errors;
 using PipServices.Commons.Log;
 using PipServices.Commons.Refer;
-using PipServices.Telemetry.Build;
-using PipServices.Telemetry.Clients;
-using PipServices.Telemetry.Models;
-using PipServices.Telemetry.Helpers;
+using System.Linq;
 
-namespace PipServices.Telemetry.Logic
+namespace HealthDashboard.Logic.Logic
 {
-    public class StatisticController : IStatisticController, IReferenceable, IConfigurable
+    public class HealthDashboardController : IHealthDashboardController, IReferenceable, IConfigurable
     {
         private readonly CompositeLogger _logger = new CompositeLogger();
-        private ITelemetryClient _client;
+        private IBiometryClient _client;
 
         public void SetReferences(IReferences references)
         {
             _logger.SetReferences(references);
 
-            _client = references.GetOneRequired<ITelemetryClient>(Descriptors.TelemetryClient);
+            _client = references.GetOneRequired<IBiometryClient>(Descriptors.BiometryClient);
 
             if (_client == null)
-                throw new ConfigException(null, "NO_TELEMETRY_CLIENT", "Telemetry Client is not configured");
+                throw new ConfigException(null, "NO_BIOMETRY_CLIENT", "Telemetry Client is not configured");
 
             var referensable = _client as IReferenceable;
             referensable?.SetReferences(references);
@@ -36,32 +36,32 @@ namespace PipServices.Telemetry.Logic
             _logger.Configure(config);
         }
 
-        public async Task<IEnumerable<TelemetryPoint>> GetTemperatureAsync(string correlationId, string personId, DateTime @from, DateTime to)
+        public async Task<IEnumerable<BiometryPoint>> GetTemperatureAsync(string correlationId, string personId, DateTime @from, DateTime to)
         {
             _logger.Trace(correlationId, this);
 
             var telemetries = await _client.GetAllAsync(correlationId);
             var result =
                 telemetries.Where(x => x.PersonId.Equals(personId) && x.ReadDataTime >= from && x.ReadDataTime <= to)
-                    .Select(x => new TelemetryPoint {ReadDataTime = x.ReadDataTime, Value = x.Temperature}).ToList();
+                    .Select(x => new BiometryPoint { ReadDataTime = x.ReadDataTime, Value = x.Temperature}).ToList();
             return result;
         }
 
-        public async Task<IEnumerable<TelemetryPoint>> GetHeartRateAsync(string correlationId, string personId, DateTime @from, DateTime to)
+        public async Task<IEnumerable<BiometryPoint>> GetHeartRateAsync(string correlationId, string personId, DateTime @from, DateTime to)
         {
             var telemetries = await _client.GetAllAsync(correlationId);
             var result =
                 telemetries.Where(x => x.PersonId.Equals(personId) && x.ReadDataTime >= from && x.ReadDataTime <= to)
-                    .Select(x => new TelemetryPoint { ReadDataTime = x.ReadDataTime, Value = x.HeartRate }).ToList();
+                    .Select(x => new BiometryPoint { ReadDataTime = x.ReadDataTime, Value = x.HeartRate }).ToList();
             return result;
         }
 
-        public async Task<IEnumerable<TelemetryPoint>> GetBloodOxygenAsync(string correlationId, string personId, DateTime @from, DateTime to)
+        public async Task<IEnumerable<BiometryPoint>> GetBloodOxygenAsync(string correlationId, string personId, DateTime @from, DateTime to)
         {
             var telemetries = await _client.GetAllAsync(correlationId);
             var result =
                 telemetries.Where(x => x.PersonId.Equals(personId) && x.ReadDataTime >= from && x.ReadDataTime <= to)
-                    .Select(x => new TelemetryPoint { ReadDataTime = x.ReadDataTime, Value = x.BloodOxygen }).ToList();
+                    .Select(x => new BiometryPoint { ReadDataTime = x.ReadDataTime, Value = x.BloodOxygen }).ToList();
             return result;
         }
     }

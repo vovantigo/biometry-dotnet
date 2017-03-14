@@ -14,7 +14,7 @@ namespace Biometry.Client.Clients
                 return ExecuteAsync<PersonBiometry[]>(
                     correlationId,
                     HttpMethod.Get,
-                    $"telemetry?correlation_id={correlationId}"
+                    "biometry" + (string.IsNullOrWhiteSpace(correlationId) ? string.Empty : $"?correlation_id={correlationId}")
                 );
             }
         }
@@ -26,7 +26,7 @@ namespace Biometry.Client.Clients
                 return ExecuteAsync<PersonBiometry>(
                     correlationId,
                     HttpMethod.Get,
-                    $"telemetry/{id}?correlation_id={correlationId}"
+                    $"biometry/{id}" + (string.IsNullOrWhiteSpace(correlationId) ? string.Empty : $"?correlation_id={correlationId}")
                 );
             }
         }
@@ -38,7 +38,7 @@ namespace Biometry.Client.Clients
                 return ExecuteAsync<PersonBiometry>(
                     correlationId,
                     HttpMethod.Post,
-                    $"telemetry?correlation_id={correlationId}",
+                    "biometry" + (string.IsNullOrWhiteSpace(correlationId) ? string.Empty : $"?correlation_id={correlationId}"),
                     item
                 );
             }

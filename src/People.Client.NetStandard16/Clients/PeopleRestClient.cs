@@ -14,7 +14,7 @@ namespace People.Client.Clients
                 return ExecuteAsync<Person[]>(
                     correlationId,
                     HttpMethod.Get,
-                    $"people?correlation_id={correlationId}"
+                    "people" + (string.IsNullOrWhiteSpace(correlationId) ? string.Empty : $"?correlation_id={correlationId}")
                 );
             }
         }
@@ -26,7 +26,7 @@ namespace People.Client.Clients
                 return ExecuteAsync<Person>(
                     correlationId,
                     HttpMethod.Get,
-                    $"people/{id}?correlation_id={correlationId}"
+                    $"people/{id}" + (string.IsNullOrWhiteSpace(correlationId) ? string.Empty : $"?correlation_id={correlationId}")
                 );
             }
         }
@@ -38,7 +38,7 @@ namespace People.Client.Clients
                 return ExecuteAsync<Person>(
                     correlationId,
                     HttpMethod.Post,
-                    $"people?correlation_id={correlationId}",
+                    "people" + (string.IsNullOrWhiteSpace(correlationId) ? string.Empty : $"?correlation_id={correlationId}"),
                     item
                 );
             }

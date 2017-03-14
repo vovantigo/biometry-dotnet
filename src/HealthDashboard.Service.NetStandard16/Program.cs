@@ -1,14 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
+using HealthDashboard.Service.Run;
 
-namespace Statistic.Service.NetStandard16
+namespace HealthDashboard.Service
 {
     public class Program
     {
         public static void Main(string[] args)
         {
+            try
+            {
+                var task = (new HealthDashboardProcess()).RunAsync(args, CancellationToken.None);
+                task.Wait();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
     }
 }

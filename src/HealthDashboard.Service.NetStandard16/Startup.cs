@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Biometry.Common.Build;
+using HealthDashboard.Logic.Logic;
+using HealthDashboard.Service.Build;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PipServices.Commons.Refer;
 using PipServices.Net.Rest;
-using PipServices.Telemetry.Logic;
 
-namespace PipServices.Telemetry
+namespace HealthDashboard.Service
 {
     public class Startup
     {
@@ -24,15 +27,19 @@ namespace PipServices.Telemetry
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //var builder = services.AddMvc();
-            //builder.AddMvcOptions(o =>
-            //{
-            //    o.Filters.Add(new RestExceptionHandler());
-            //});
-
-            services.AddSingleton<IPeopleController, PeopleController>();
-            services.AddSingleton<ITelemetryController, TelemetryController>();
-            services.AddSingleton<IStatisticController, StatisticController>();
+            var builder = services.AddMvc();
+            builder.AddMvcOptions(o =>
+            {
+                o.Filters.Add(typeof(RestExceptionHandler));
+            });
+            services.AddSingleton<IHealthDashboardController, HealthDashboardController>(provider =>
+            {
+                var client = HealthDashboardFactory.Create(Descriptors.BiometryClient);
+                var references = References.FromTuples(Descriptors.BiometryClient, client);
+                var controller = (HealthDashboardController)HealthDashboardFactory.Create(Descriptors.HealthDashboardController);
+                controller.SetReferences(references);
+                return controller;
+            });
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory, IApplicationLifetime applicationLifetime)

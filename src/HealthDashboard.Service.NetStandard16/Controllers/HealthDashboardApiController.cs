@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using PipServices.Telemetry.Logic;
-using PipServices.Telemetry.Models;
+using Biometry.Common.Models;
+using HealthDashboard.Logic.Logic;
+using System.Linq;
 
-namespace PipServices.Telemetry.Controllers
+namespace HealthDashboard.Service.Controllers
 {
-    [Route("statistic")]
-    public class StatisticApiController : Controller
+    [Route("health_dashboard")]
+    public class HealthDashboardApiController : Controller
     {
-        public StatisticApiController(IStatisticController controller)
+        public HealthDashboardApiController(IHealthDashboardController controller)
         {
             if (controller == null)
                 throw new ArgumentNullException(nameof(controller));
@@ -18,10 +18,10 @@ namespace PipServices.Telemetry.Controllers
             _controller = controller;
         }
 
-        private readonly IStatisticController _controller;
+        private readonly IHealthDashboardController _controller;
 
         [HttpGet("temperature/{personId}")]
-        public async Task<TelemetryPoint[]> GetTemperatureAsync(string personId, 
+        public async Task<BiometryPoint[]> GetTemperatureAsync(string personId, 
             [FromQuery(Name = "correlation_id")] string correlationId,
             DateTime from,
             DateTime to)
@@ -31,7 +31,7 @@ namespace PipServices.Telemetry.Controllers
         }
 
         [HttpGet("blood/{personId}")]
-        public async Task<TelemetryPoint[]> GetBloodOxygenAsync(string personId,
+        public async Task<BiometryPoint[]> GetBloodOxygenAsync(string personId,
             [FromQuery(Name = "correlation_id")] string correlationId,
             DateTime from,
             DateTime to)
@@ -41,7 +41,7 @@ namespace PipServices.Telemetry.Controllers
         }
 
         [HttpGet("heart/{personId}")]
-        public async Task<TelemetryPoint[]> GetHeartRateAsync(string personId,
+        public async Task<BiometryPoint[]> GetHeartRateAsync(string personId,
             [FromQuery(Name = "correlation_id")] string correlationId,
             DateTime from,
             DateTime to)
