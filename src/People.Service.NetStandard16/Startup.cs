@@ -34,9 +34,9 @@ namespace People.Service
             });
             services.AddSingleton<IPeopleController, PeopleController>(provider =>
             {
-                var persistence = PeopleFactory.Create(Descriptors.BiometryMemoryPersistence);
-                var references = References.FromTuples(Descriptors.BiometryMemoryPersistence, persistence);
-                var controller = (PeopleController)PeopleFactory.Create(Descriptors.BiometryController);
+                var persistence = PeopleFactory.Create(Descriptors.PeopleMemoryPersistence);
+                var references = References.FromTuples(Descriptors.PeopleMemoryPersistence, persistence);
+                var controller = (PeopleController)PeopleFactory.Create(Descriptors.PeopleController);
                 controller.SetReferences(references);
                 return controller;
             });
